@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "quote": "I can get loud too! What the hell?",
+    "speaker": "Sandra Diaz-Twine",
+    "season": "Pearl Islands",
+    "seasonNumber": 7,
+    "seasonDisplay": "Season 7: Pearl Islands",
+    "context": "Camp confrontation",
+    "era": "classic",
+    "difficulty": "easy",
+    "tags": ["iconic"]
+  },
+  {
+    "id": 2,
+    "quote": "It's a fucking stick! He handed me a stick!",
+    "speaker": "Eliza Orlins",
+    "season": "Micronesia",
+    "seasonNumber": 16,
+    "seasonDisplay": "Season 16: Micronesia",
+    "context": "Tribal Council",
+    "era": "middle",
+    "difficulty": "medium",
+    "tags": ["iconic", "blindside"]
+  },
+  {
+    "id": 3,
+    "quote": "The queen stays queen. Adios.",
+    "speaker": "Sandra Diaz-Twine",
+    "season": "Game Changers",
+    "seasonNumber": 34,
+    "seasonDisplay": "Season 34: Game Changers",
+    "context": "Tribal Council",
+    "era": "modern",
+    "difficulty": "easy",
+    "tags": ["iconic", "final-words"]
+  },
+  {
+    "id": 4,
+    "quote": "My grandma is at home watching Jerry Springer right now.",
+    "speaker": "Jon Dalton",
+    "season": "Pearl Islands",
+    "seasonNumber": 7,
+    "seasonDisplay": "Season 7: Pearl Islands",
+    "context": "Confessional",
+    "era": "classic",
+    "difficulty": "easy",
+    "tags": ["iconic", "lie"]
+  },
+  {
+    "id": 5,
+    "quote": "I would like to give this hidden immunity idol to Jerri.",
+    "speaker": "Parvati Shallow",
+    "season": "Heroes vs. Villains",
+    "seasonNumber": 20,
+    "seasonDisplay": "Season 20: Heroes vs. Villains",
+    "context": "Tribal Council",
+    "era": "middle",
+    "difficulty": "medium",
+    "tags": ["iconic", "idol", "blindside"]
+  },
+  {
+    "id": 6,
+    "quote": "I want to give individual immunity to Natalie.",
+    "speaker": "Erik Reichenbach",
+    "season": "Micronesia",
+    "seasonNumber": 16,
+    "seasonDisplay": "Season 16: Micronesia",
+    "context": "Tribal Council",
+    "era": "middle",
+    "difficulty": "medium",
+    "tags": ["iconic", "blindside"]
+  },
+  {
+    "id": 7,
+    "quote": "I built a spy shack right behind the shelter so I can listen.",
+    "speaker": "Tony Vlachos",
+    "season": "Cagayan",
+    "seasonNumber": 28,
+    "seasonDisplay": "Season 28: Cagayan",
+    "context": "Confessional",
+    "era": "new",
+    "difficulty": "easy",
+    "tags": ["iconic", "funny", "strategy"]
+  },
+  {
+    "id": 8,
+    "quote": "If Jean-Robert gets struck by lightning I would not even flinch.",
+    "speaker": "Courtney Yates",
+    "season": "China",
+    "seasonNumber": 15,
+    "seasonDisplay": "Season 15: China",
+    "context": "Confessional",
+    "era": "middle",
+    "difficulty": "medium",
+    "tags": ["funny", "iconic"]
+  },
+  {
+    "id": 9,
+    "quote": "I literally negotiated for the rice and nobody even thanked me.",
+    "speaker": "Angelina Keeley",
+    "season": "David vs. Goliath",
+    "seasonNumber": 37,
+    "seasonDisplay": "Season 37: David vs. Goliath",
+    "context": "Final Tribal Council",
+    "era": "modern",
+    "difficulty": "easy",
+    "tags": ["iconic", "funny"]
+  },
+  {
+    "id": 10,
+    "quote": "I'm against you, Russell. I'm against you, Russell.",
+    "speaker": "Sandra Diaz-Twine",
+    "season": "Heroes vs. Villains",
+    "seasonNumber": 20,
+    "seasonDisplay": "Season 20: Heroes vs. Villains",
+    "context": "Camp",
+    "era": "middle",
+    "difficulty": "easy",
+    "tags": ["iconic", "villain"]
+  }
+]
