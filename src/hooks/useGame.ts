@@ -50,6 +50,20 @@ export function useGame() {
     }
   }, [setGameState, setAnswer, setLoading, setError]);
 
+  const requestSeasonHint = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await api.submitSeasonHint();
+      setGameState(data.state);
+      if (data.answer) setAnswer(data.answer);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to get hint');
+    } finally {
+      setLoading(false);
+    }
+  }, [setGameState, setAnswer, setLoading, setError]);
+
   const submitSeason = useCallback(async (seasonNumber: number) => {
     setLoading(true);
     setError(null);
@@ -82,6 +96,7 @@ export function useGame() {
     loadGame,
     submitGuess,
     revealWord,
+    requestSeasonHint,
     submitSeason,
   };
 }

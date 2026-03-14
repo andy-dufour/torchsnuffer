@@ -15,7 +15,7 @@ export function ResultModal({ gameState, answer, quote, onClose, onViewLeaderboa
   const won = gameState.status === 'won';
   const attempts = gameState.guesses.length;
   const rating = won ? SCORE_RATINGS[attempts] : SCORE_RATINGS[0];
-  const seasonCorrect = gameState.seasonGuess?.correct ?? false;
+  const seasonCorrect = (gameState.seasonGuess?.correct ?? false) && !gameState.seasonHintUsed;
 
   if (!rating) return null;
 
@@ -37,6 +37,10 @@ export function ResultModal({ gameState, answer, quote, onClose, onViewLeaderboa
               <div className="text-center mb-3">
                 <span className="text-gold text-lg font-bold animate-[star-burst_500ms_ease-out]">⭐ Perfect read!</span>
               </div>
+            ) : gameState.seasonGuess?.correct && gameState.seasonHintUsed ? (
+              <p className="text-center text-text-secondary text-sm mb-3">
+                Season: ✓ (No bonus — hint used)
+              </p>
             ) : answer ? (
               <p className="text-center text-text-secondary text-sm mb-3">
                 Season: ✗ (It was {answer.season})

@@ -67,4 +67,27 @@ describe('buildShareText', () => {
     expect(text).not.toContain('⭐');
     expect(text).toContain('Torches: 0 snuffed');
   });
+
+  it('shows hint emoji and no season bonus when hint used', () => {
+    const state: GameState = {
+      date: '2026-04-01',
+      puzzleNumber: 7,
+      status: 'won',
+      revealedWordIndices: [0, 1],
+      guesses: [
+        { type: 'hint', value: 'classic', correct: false, wordsRevealed: [], timestamp: 1 },
+        { type: 'guess', value: 'Correct', correct: true, wordsRevealed: [], timestamp: 2 },
+      ],
+      seasonGuess: { seasonNumber: 1, correct: true },
+      seasonHintUsed: true,
+      seasonHintValue: 'classic',
+      completedAt: Date.now(),
+    };
+
+    const text = buildShareText(state);
+    expect(text).toContain('🔮🔥');
+    expect(text).not.toContain('⭐');
+    expect(text).not.toContain('Season bonus!');
+    expect(text).toContain('Torches: 1 snuffed');
+  });
 });

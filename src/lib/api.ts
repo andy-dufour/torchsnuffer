@@ -56,6 +56,13 @@ export async function submitReveal(): Promise<GuessResponse> {
   });
 }
 
+export async function submitSeasonHint(): Promise<GuessResponse> {
+  return fetchJson<GuessResponse>('/api/game/guess', {
+    method: 'POST',
+    body: JSON.stringify({ action: 'hint' }),
+  });
+}
+
 export async function submitSeasonGuess(seasonNumber: number): Promise<SeasonResponse> {
   return fetchJson<SeasonResponse>('/api/game/season', {
     method: 'POST',

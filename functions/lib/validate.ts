@@ -157,6 +157,49 @@ export function processReveal(
   };
 }
 
+export function processSeasonHint(
+  state: GameState,
+  puzzle: DailyPuzzle,
+): { state: GameState; hintValue?: string; error?: string } {
+  if (state.status !== 'playing') {
+    return { state, error: 'Game is not in playing state' };
+  }
+  if (state.seasonHintUsed) {
+    return { state, error: 'Season hint already used' };
+  }
+  if (state.guesses.length >= MAX_ATTEMPTS) {
+    return { state, error: 'Maximum attempts reached' };
+  }
+
+  const quote = getQuoteById(puzzle.quoteId);
+  if (!quote) {
+    return { state, error: 'Puzzle data error' };
+  }
+
+  const guess: Guess = {
+    type: 'hint',
+    value: quote.era,
+    correct: false,
+    wordsRevealed: [],
+    timestamp: Date.now(),
+  };
+
+  const newGuesses = [...state.guesses, guess];
+  const isLost = newGuesses.length >= MAX_ATTEMPTS;
+
+  return {
+    state: {
+      ...state,
+      status: isLost ? 'lost' : 'playing',
+      guesses: newGuesses,
+      seasonHintUsed: true,
+      seasonHintValue: quote.era,
+      completedAt: isLost ? Date.now() : undefined,
+    },
+    hintValue: quote.era,
+  };
+}
+
 export function processSeasonGuess(
   state: GameState,
   puzzle: DailyPuzzle,

@@ -5,9 +5,11 @@ import { TorchBar } from './TorchBar';
 import { QuoteDisplay } from './QuoteDisplay';
 import { GuessInput } from './GuessInput';
 import { RevealButton } from './RevealButton';
+import { HintButton } from './HintButton';
 import { GuessHistory } from './GuessHistory';
 import { SeasonPicker } from './SeasonPicker';
 import { ResultModal } from '../results/ResultModal';
+import { ERA_LABELS } from '../../types';
 
 export function GameBoard() {
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ export function GameBoard() {
     loadGame,
     submitGuess,
     revealWord,
+    requestSeasonHint,
     submitSeason,
   } = useGame();
 
@@ -50,7 +53,7 @@ export function GameBoard() {
     if (lastGuess.wordsRevealed.length > 0) setNewlyRevealed(lastGuess.wordsRevealed);
     if (lastGuess.autoRevealedWords?.length) setAutoRevealed(lastGuess.autoRevealedWords);
 
-    const isSnuff = (lastGuess.type === 'guess' && !lastGuess.correct) || lastGuess.type === 'reveal';
+    const isSnuff = (lastGuess.type === 'guess' && !lastGuess.correct) || lastGuess.type === 'reveal' || lastGuess.type === 'hint';
     if (isSnuff) setTorchAnimating(true);
     if (lastGuess.type === 'guess' && lastGuess.correct) {
       setShowCorrectGlow(true);
@@ -104,10 +107,17 @@ export function GameBoard() {
         isCorrect={showCorrectGlow}
       />
 
+      {gameState.seasonHintValue && (
+        <div className="mx-4 px-3 py-2 bg-gold/10 border border-gold/30 rounded-lg text-center animate-[slide-in-left_200ms_ease-out]">
+          <span className="text-gold text-sm font-medium">🔮 {ERA_LABELS[gameState.seasonHintValue] ?? gameState.seasonHintValue}</span>
+        </div>
+      )}
+
       {!isGameOver && !isGuessingsSeason && (
         <>
           <GuessInput onSubmit={submitGuess} disabled={isLoading} />
           <RevealButton onReveal={revealWord} disabled={isLoading} allRevealed={allRevealed} />
+          <HintButton onHint={requestSeasonHint} disabled={isLoading} alreadyUsed={gameState.seasonHintUsed} />
         </>
       )}
 

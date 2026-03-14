@@ -46,17 +46,26 @@ export interface GameState {
   revealedWordIndices: number[];
   guesses: Guess[];
   seasonGuess?: SeasonGuess;
+  seasonHintUsed?: boolean;
+  seasonHintValue?: string;
   completedAt?: number;
 }
 
 export interface Guess {
-  type: "guess" | "reveal";
+  type: "guess" | "reveal" | "hint";
   value: string;
   correct: boolean;
   wordsRevealed: number[];
   autoRevealedWords?: number[];
   timestamp: number;
 }
+
+export const ERA_LABELS: Record<string, string> = {
+  classic: "Classic Era (Seasons 1–8)",
+  middle: "Middle Era (Seasons 9–20)",
+  new: "New School (Seasons 21–34)",
+  modern: "Modern Era (Seasons 35–47)",
+};
 
 export interface SeasonGuess {
   seasonNumber: number;

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { GameState, DailyPuzzle } from '../src/types';
-import { createFreshGameState, processGuess, processReveal, processSeasonGuess } from '../functions/lib/validate';
+import { createFreshGameState, processGuess, processReveal, processSeasonGuess, processSeasonHint } from '../functions/lib/validate';
 
 function makePuzzle(overrides?: Partial<DailyPuzzle>): DailyPuzzle {
   return {
@@ -126,5 +126,52 @@ describe('processSeasonGuess', () => {
 
     const { error } = processSeasonGuess(state, puzzle, 7);
     expect(error).toBe('Not in season guessing phase');
+  });
+});
+
+describe('processSeasonHint', () => {
+  it('reveals the era and marks hint as used', () => {
+    const puzzle = makePuzzle();
+    const state = createFreshGameState(puzzle);
+
+    const { state: next, hintValue } = processSeasonHint(state, puzzle);
+    expect(next.seasonHintUsed).toBe(true);
+    expect(next.seasonHintValue).toBeDefined();
+    expect(hintValue).toBeDefined();
+    expect(next.guesses).toHaveLength(1);
+    expect(next.guesses[0].type).toBe('hint');
+  });
+
+  it('costs an attempt (torch)', () => {
+    const puzzle = makePuzzle();
+    const state = createFreshGameState(puzzle);
+
+    const { state: next } = processSeasonHint(state, puzzle);
+    expect(next.guesses).toHaveLength(1);
+    expect(next.status).toBe('playing');
+  });
+
+  it('rejects second hint request', () => {
+    const puzzle = makePuzzle();
+    const state = createFreshGameState(puzzle);
+
+    const { state: afterHint } = processSeasonHint(state, puzzle);
+    const { error } = processSeasonHint(afterHint, puzzle);
+    expect(error).toBe('Season hint already used');
+  });
+
+  it('can cause a loss if it was the last attempt', () => {
+    const puzzle = makePuzzle();
+    let state = createFreshGameState(puzzle);
+
+    const wrongNames = ['Russell Hantz', 'Parvati Shallow', 'Rob Mariano', 'Tony Vlachos', 'Ozzy Lusth'];
+    for (const name of wrongNames) {
+      state = processGuess(state, puzzle, name).state;
+    }
+    expect(state.guesses).toHaveLength(5);
+
+    const { state: next } = processSeasonHint(state, puzzle);
+    expect(next.status).toBe('lost');
+    expect(next.guesses).toHaveLength(6);
   });
 });

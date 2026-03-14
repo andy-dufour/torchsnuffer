@@ -63,7 +63,7 @@ export async function handleSeason(request: Request, env: TracedEnv): Promise<Re
   typedStats.totalWon++;
   typedStats.currentStreak++;
   typedStats.maxStreak = Math.max(typedStats.maxStreak, typedStats.currentStreak);
-  if (result.state.seasonGuess?.correct) typedStats.seasonBonuses++;
+  if (result.state.seasonGuess?.correct && !result.state.seasonHintUsed) typedStats.seasonBonuses++;
 
   const attemptCount = result.state.guesses.length;
   typedStats.distributionByAttempts[attemptCount] =

@@ -1,4 +1,5 @@
 import type { Guess } from '../../types';
+import { ERA_LABELS } from '../../types';
 
 interface GuessHistoryProps {
   guesses: Guess[];
@@ -14,7 +15,12 @@ export function GuessHistory({ guesses }: GuessHistoryProps) {
           key={i}
           className="flex items-center gap-2 text-sm animate-[slide-in-left_200ms_ease-out]"
         >
-          {guess.type === 'reveal' ? (
+          {guess.type === 'hint' ? (
+            <>
+              <span className="text-gold">🔮</span>
+              <span className="text-gold">Season hint: {ERA_LABELS[guess.value] ?? guess.value}</span>
+            </>
+          ) : guess.type === 'reveal' ? (
             <>
               <span className="text-text-muted">→</span>
               <span className="text-text-secondary">Revealed {guess.wordsRevealed.length === 1 ? 'a word' : `${guess.wordsRevealed.length} words`}</span>

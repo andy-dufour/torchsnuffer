@@ -4,11 +4,12 @@ export function buildShareText(state: GameState): string {
   const puzzleNum = state.puzzleNumber;
   const won = state.status === 'won';
   const attemptCount = state.guesses.length;
-  const seasonCorrect = state.seasonGuess?.correct ?? false;
+  const seasonCorrect = (state.seasonGuess?.correct ?? false) && !state.seasonHintUsed;
 
   const emojiRow = state.guesses
     .map((g) => {
       if (g.type === 'reveal') return '⬜';
+      if (g.type === 'hint') return '🔮';
       if (g.correct) return '🔥';
       return '💨';
     })

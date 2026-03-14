@@ -1,6 +1,6 @@
 import { getDailyPuzzle, getQuoteById } from '../../lib/puzzle';
 import { getPlayerIdFromCookie } from '../../lib/auth';
-import { processGuess, processReveal } from '../../lib/validate';
+import { processGuess, processReveal, processSeasonHint } from '../../lib/validate';
 import { tracedKvGet, tracedKvPut, type TracedEnv } from '../../lib/tracing';
 import type { GameState } from '../../../src/types';
 
@@ -16,7 +16,7 @@ export async function handleGuess(request: Request, env: TracedEnv): Promise<Res
     return new Response(JSON.stringify({ error: 'No player ID' }), { status: 401 });
   }
 
-  const body = await request.json() as { action: 'guess' | 'reveal'; value?: string };
+  const body = await request.json() as { action: 'guess' | 'reveal' | 'hint'; value?: string };
   const today = getTodayET();
   const puzzle = getDailyPuzzle(today);
 
@@ -30,6 +30,8 @@ export async function handleGuess(request: Request, env: TracedEnv): Promise<Res
 
   if (body.action === 'reveal') {
     result = processReveal(savedState, puzzle);
+  } else if (body.action === 'hint') {
+    result = processSeasonHint(savedState, puzzle);
   } else if (body.action === 'guess' && body.value) {
     result = processGuess(savedState, puzzle, body.value);
   } else {
