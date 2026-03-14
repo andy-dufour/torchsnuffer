@@ -10,9 +10,7 @@ function getTodayET(): string {
   return et.toISOString().split('T')[0];
 }
 
-export const onRequestPost: PagesFunction<TracedEnv> = async (context) => {
-  const { request, env } = context;
-
+export async function handleGuess(request: Request, env: TracedEnv): Promise<Response> {
   const playerId = getPlayerIdFromCookie(request);
   if (!playerId) {
     return new Response(JSON.stringify({ error: 'No player ID' }), { status: 401 });
@@ -58,4 +56,4 @@ export const onRequestPost: PagesFunction<TracedEnv> = async (context) => {
   return new Response(JSON.stringify(response), {
     headers: { 'Content-Type': 'application/json' },
   });
-};
+}

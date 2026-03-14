@@ -1,18 +1,9 @@
 import { trace } from '@opentelemetry/api';
-import type { ResolveConfigFn } from '@microlabs/otel-cf-workers';
 
 export interface TracedEnv {
   GAME_KV: KVNamespace;
   HONEYCOMB_API_KEY?: string;
 }
-
-export const otelConfig: ResolveConfigFn<TracedEnv> = (env) => ({
-  exporter: {
-    url: 'https://api.honeycomb.io/v1/traces',
-    headers: { 'x-honeycomb-team': env.HONEYCOMB_API_KEY || '' },
-  },
-  service: { name: 'torchsnuffer-api' },
-});
 
 const tracer = trace.getTracer('torchsnuffer-api');
 

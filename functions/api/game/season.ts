@@ -10,9 +10,7 @@ function getTodayET(): string {
   return et.toISOString().split('T')[0];
 }
 
-export const onRequestPost: PagesFunction<TracedEnv> = async (context) => {
-  const { request, env } = context;
-
+export async function handleSeason(request: Request, env: TracedEnv): Promise<Response> {
   const playerId = getPlayerIdFromCookie(request);
   if (!playerId) {
     return new Response(JSON.stringify({ error: 'No player ID' }), { status: 401 });
@@ -39,7 +37,6 @@ export const onRequestPost: PagesFunction<TracedEnv> = async (context) => {
 
   const quote = getQuoteById(puzzle.quoteId);
 
-  // Update player stats
   const statsKey = `player:${playerId}:stats`;
   const stats = (await tracedKvGet(env.GAME_KV, statsKey)) as Record<string, unknown> | null ?? {
     playerId,
@@ -82,4 +79,4 @@ export const onRequestPost: PagesFunction<TracedEnv> = async (context) => {
     }),
     { headers: { 'Content-Type': 'application/json' } },
   );
-};
+}

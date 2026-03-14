@@ -9,8 +9,7 @@ function getTodayET(): string {
   return et.toISOString().split('T')[0];
 }
 
-export const onRequestGet: PagesFunction<TracedEnv> = async (context) => {
-  const { request, env } = context;
+export async function handleToday(request: Request, env: TracedEnv): Promise<Response> {
   const today = getTodayET();
   const puzzle = getDailyPuzzle(today);
 
@@ -50,4 +49,4 @@ export const onRequestGet: PagesFunction<TracedEnv> = async (context) => {
     JSON.stringify({ puzzle, state: freshState }),
     { headers },
   );
-};
+}
