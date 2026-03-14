@@ -42,17 +42,26 @@ function daysBetween(a: Date, b: Date): number {
   return Math.floor((b.getTime() - a.getTime()) / msPerDay);
 }
 
+export function getRevealSize(wordCount: number): number {
+  return Math.max(1, Math.floor(wordCount / 6));
+}
+
 export function getDailyPuzzle(date: string): DailyPuzzle {
   const dayIndex = daysBetween(EPOCH, new Date(date + "T00:00:00-04:00"));
   const shuffledQuotes = seededShuffle(quotes, PUZZLE_SEED);
   const quote = shuffledQuotes[((dayIndex % shuffledQuotes.length) + shuffledQuotes.length) % shuffledQuotes.length];
 
   const words = quote.quote.split(' ');
-  const revealSeed = hashString(date + REVEAL_SALT);
-  const revealOrder = seededShuffle(
-    words.map((_, i) => i),
-    revealSeed,
+  const revealSize = getRevealSize(words.length);
+
+  const protectedCount = Math.min(2, Math.max(0, words.length - 1));
+  const protectedIndices = new Set(
+    Array.from({ length: protectedCount }, (_, i) => words.length - 1 - i),
   );
+  const revealableIndices = words.map((_, i) => i).filter(i => !protectedIndices.has(i));
+
+  const revealSeed = hashString(date + REVEAL_SALT);
+  const revealOrder = seededShuffle(revealableIndices, revealSeed);
 
   return {
     puzzleNumber: dayIndex + 1,
@@ -61,6 +70,7 @@ export function getDailyPuzzle(date: string): DailyPuzzle {
     quote: quote.quote,
     wordCount: words.length,
     revealOrder,
+    revealSize,
     context: quote.context,
     difficulty: quote.difficulty,
   };

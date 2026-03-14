@@ -2,8 +2,8 @@ interface QuoteDisplayProps {
   words: string[];
   revealedIndices: number[];
   context: string;
-  newlyRevealed?: number;
-  autoRevealed?: number;
+  newlyRevealed?: number[];
+  autoRevealed?: number[];
   isCorrect?: boolean;
 }
 
@@ -16,6 +16,8 @@ export function QuoteDisplay({
   isCorrect,
 }: QuoteDisplayProps) {
   const revealedSet = new Set(revealedIndices);
+  const newSet = new Set(newlyRevealed ?? []);
+  const autoSet = new Set(autoRevealed ?? []);
 
   return (
     <div className={`rounded-xl bg-bg-secondary p-5 mx-4 transition-shadow duration-600 ${isCorrect ? 'shadow-[0_0_20px_6px_rgba(45,139,94,0.4)]' : ''}`}>
@@ -23,8 +25,8 @@ export function QuoteDisplay({
         <span className="text-text-secondary text-2xl font-light mr-1">&ldquo;</span>
         {words.map((word, i) => {
           const isRevealed = revealedSet.has(i);
-          const isNew = i === newlyRevealed;
-          const isAuto = i === autoRevealed;
+          const isNew = newSet.has(i);
+          const isAuto = autoSet.has(i);
 
           if (isRevealed) {
             let animClass = '';

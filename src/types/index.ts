@@ -34,6 +34,7 @@ export interface DailyPuzzle {
   quote: string;
   wordCount: number;
   revealOrder: number[];
+  revealSize: number;
   context: string;
   difficulty: "easy" | "medium" | "hard";
 }
@@ -52,8 +53,8 @@ export interface Guess {
   type: "guess" | "reveal";
   value: string;
   correct: boolean;
-  wordRevealed: number;
-  autoRevealedWord?: number;
+  wordsRevealed: number[];
+  autoRevealedWords?: number[];
   timestamp: number;
 }
 

@@ -254,5 +254,20 @@
   {"name": "Joel Klug", "fullName": "Joel Klug", "seasons": [1]},
   {"name": "Gretchen Cordy", "fullName": "Gretchen Cordy", "seasons": [1]},
   {"name": "Sean Kenniff", "fullName": "Sean Kenniff", "seasons": [1]},
-  {"name": "Jeff Probst", "fullName": "Jeff Probst", "seasons": [], "aliases": ["Probst", "Jeff"]}
+  {"name": "Jeff Probst", "fullName": "Jeff Probst", "seasons": [], "aliases": ["Probst", "Jeff"]},
+  {"name": "Alicia Calaway", "fullName": "Alicia Calaway", "seasons": [2]},
+  {"name": "Crystal Cox", "fullName": "Crystal Cox", "seasons": [17]},
+  {"name": "Sugar Kiper", "fullName": "Jessica Kiper", "seasons": [17, 20], "aliases": ["Sugar"]},
+  {"name": "Randy Bailey", "fullName": "Randy Bailey", "seasons": [17, 20]},
+  {"name": "Judd Sergeant", "fullName": "Judd Sergeant", "seasons": [11]},
+  {"name": "Jeff Kent", "fullName": "Jeff Kent", "seasons": [25]},
+  {"name": "Natalie Cole", "fullName": "Natalie Cole", "seasons": [37]},
+  {"name": "Corinne Kaplan", "fullName": "Corinne Kaplan", "seasons": [17, 26]},
+  {"name": "Chris Noble", "fullName": "Chris Noble", "seasons": [36]},
+  {"name": "Chicken Morris", "fullName": "Chicken Morris", "seasons": [15]},
+  {"name": "Deena Bennett", "fullName": "Deena Bennett", "seasons": [6]},
+  {"name": "Colton Cumbie", "fullName": "Colton Cumbie", "seasons": [24, 27]},
+  {"name": "Kat Edorsson", "fullName": "Kat Edorsson", "seasons": [24, 27]},
+  {"name": "Dan Lembo", "fullName": "Dan Lembo", "seasons": [21]},
+  {"name": "Jenn Brown", "fullName": "Jenn Brown", "seasons": [30]}
 ]

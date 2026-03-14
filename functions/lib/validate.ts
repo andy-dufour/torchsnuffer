@@ -60,7 +60,7 @@ export function processGuess(
       type: 'guess',
       value: guessValue,
       correct: true,
-      wordRevealed: -1,
+      wordsRevealed: [],
       timestamp: Date.now(),
     };
 
@@ -73,25 +73,28 @@ export function processGuess(
     };
   }
 
-  const nextWords = getNextUnrevealedIndices(
+  const revealSize = puzzle.revealSize ?? 1;
+  const mainWords = getNextUnrevealedIndices(
     puzzle.revealOrder,
     state.revealedWordIndices,
-    2,
+    revealSize,
   );
 
-  const manualReveal = nextWords[0] ?? -1;
-  const autoReveal = nextWords[1];
+  const afterMain = [...state.revealedWordIndices, ...mainWords];
+  const autoWords = getNextUnrevealedIndices(
+    puzzle.revealOrder,
+    afterMain,
+    revealSize,
+  );
 
-  const newRevealed = [...state.revealedWordIndices];
-  if (manualReveal !== -1) newRevealed.push(manualReveal);
-  if (autoReveal !== undefined) newRevealed.push(autoReveal);
+  const newRevealed = [...afterMain, ...autoWords];
 
   const guess: Guess = {
     type: 'guess',
     value: guessValue,
     correct: false,
-    wordRevealed: manualReveal,
-    autoRevealedWord: autoReveal,
+    wordsRevealed: mainWords,
+    autoRevealedWords: autoWords.length > 0 ? autoWords : undefined,
     timestamp: Date.now(),
   };
 
@@ -121,22 +124,22 @@ export function processReveal(
     return { state, error: 'Maximum attempts reached' };
   }
 
+  const revealSize = puzzle.revealSize ?? 1;
   const nextWords = getNextUnrevealedIndices(
     puzzle.revealOrder,
     state.revealedWordIndices,
-    1,
+    revealSize,
   );
 
-  const wordRevealed = nextWords[0] ?? -1;
-  const newRevealed = wordRevealed !== -1
-    ? [...state.revealedWordIndices, wordRevealed]
+  const newRevealed = nextWords.length > 0
+    ? [...state.revealedWordIndices, ...nextWords]
     : [...state.revealedWordIndices];
 
   const guess: Guess = {
     type: 'reveal',
     value: 'reveal',
     correct: false,
-    wordRevealed,
+    wordsRevealed: nextWords,
     timestamp: Date.now(),
   };
 

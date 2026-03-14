@@ -27,8 +27,8 @@ export function GameBoard() {
   } = useGame();
 
   const [lastSnuffedIndex, setLastSnuffedIndex] = useState<number | undefined>();
-  const [newlyRevealed, setNewlyRevealed] = useState<number | undefined>();
-  const [autoRevealed, setAutoRevealed] = useState<number | undefined>();
+  const [newlyRevealed, setNewlyRevealed] = useState<number[]>([]);
+  const [autoRevealed, setAutoRevealed] = useState<number[]>([]);
   const [showCorrectGlow, setShowCorrectGlow] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
@@ -47,8 +47,8 @@ export function GameBoard() {
     if (!gameState?.guesses.length) return;
     const lastGuess = gameState.guesses[gameState.guesses.length - 1];
 
-    if (lastGuess.wordRevealed >= 0) setNewlyRevealed(lastGuess.wordRevealed);
-    if (lastGuess.autoRevealedWord !== undefined) setAutoRevealed(lastGuess.autoRevealedWord);
+    if (lastGuess.wordsRevealed.length > 0) setNewlyRevealed(lastGuess.wordsRevealed);
+    if (lastGuess.autoRevealedWords?.length) setAutoRevealed(lastGuess.autoRevealedWords);
     if (lastGuess.type === 'guess' && !lastGuess.correct) setLastSnuffedIndex(gameState.guesses.length - 1);
     if (lastGuess.type === 'guess' && lastGuess.correct) {
       setShowCorrectGlow(true);
@@ -56,8 +56,8 @@ export function GameBoard() {
     }
 
     const timer = setTimeout(() => {
-      setNewlyRevealed(undefined);
-      setAutoRevealed(undefined);
+      setNewlyRevealed([]);
+      setAutoRevealed([]);
       setLastSnuffedIndex(undefined);
     }, 500);
 
@@ -83,6 +83,9 @@ export function GameBoard() {
   }
 
   const words = puzzle.quote.split(' ');
+  const displayRevealedIndices = isGameOver
+    ? words.map((_, i) => i)
+    : gameState.revealedWordIndices;
   const allRevealed = gameState.revealedWordIndices.length >= words.length;
   const correctSpeaker = gameState.guesses.find(g => g.correct)?.value ?? '';
 
@@ -92,7 +95,7 @@ export function GameBoard() {
 
       <QuoteDisplay
         words={words}
-        revealedIndices={gameState.revealedWordIndices}
+        revealedIndices={displayRevealedIndices}
         context={puzzle.context}
         newlyRevealed={newlyRevealed}
         autoRevealed={autoRevealed}

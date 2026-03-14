@@ -17,7 +17,7 @@ export function GuessHistory({ guesses }: GuessHistoryProps) {
           {guess.type === 'reveal' ? (
             <>
               <span className="text-text-muted">→</span>
-              <span className="text-text-secondary">Revealed a word</span>
+              <span className="text-text-secondary">Revealed {guess.wordsRevealed.length === 1 ? 'a word' : `${guess.wordsRevealed.length} words`}</span>
             </>
           ) : guess.correct ? (
             <>
@@ -28,8 +28,8 @@ export function GuessHistory({ guesses }: GuessHistoryProps) {
             <>
               <span className="text-ember">✗</span>
               <span className="text-text-secondary">{guess.value}</span>
-              {guess.autoRevealedWord !== undefined && (
-                <span className="text-text-muted text-xs">(+1 word)</span>
+              {guess.autoRevealedWords && guess.autoRevealedWords.length > 0 && (
+                <span className="text-text-muted text-xs">(+{guess.autoRevealedWords.length} {guess.autoRevealedWords.length === 1 ? 'word' : 'words'})</span>
               )}
             </>
           )}

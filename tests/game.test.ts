@@ -9,7 +9,8 @@ function makePuzzle(overrides?: Partial<DailyPuzzle>): DailyPuzzle {
     quoteId: 1,
     quote: 'I can get loud too! What the hell?',
     wordCount: 8,
-    revealOrder: [3, 7, 1, 5, 0, 4, 6, 2],
+    revealOrder: [3, 1, 5, 0, 4, 2],
+    revealSize: 1,
     context: 'Camp confrontation',
     difficulty: 'easy',
     ...overrides,
@@ -32,7 +33,7 @@ describe('processReveal', () => {
     const state = createFreshGameState(puzzle);
 
     const { state: next } = processReveal(state, puzzle);
-    expect(next.revealedWordIndices).toContain(7);
+    expect(next.revealedWordIndices).toContain(1);
     expect(next.guesses).toHaveLength(1);
     expect(next.guesses[0].type).toBe('reveal');
   });
@@ -66,7 +67,7 @@ describe('processGuess', () => {
     const { state: next } = processGuess(state, puzzle, 'Russell Hantz');
     expect(next.status).toBe('playing');
     expect(next.guesses[0].correct).toBe(false);
-    expect(next.guesses[0].autoRevealedWord).toBeDefined();
+    expect(next.guesses[0].autoRevealedWords).toBeDefined();
     expect(next.revealedWordIndices.length).toBeGreaterThan(state.revealedWordIndices.length);
   });
 
@@ -98,7 +99,7 @@ describe('processSeasonGuess', () => {
     const state: GameState = {
       ...createFreshGameState(puzzle),
       status: 'guessing_season',
-      guesses: [{ type: 'guess', value: 'Sandra Diaz-Twine', correct: true, wordRevealed: -1, timestamp: Date.now() }],
+      guesses: [{ type: 'guess', value: 'Sandra Diaz-Twine', correct: true, wordsRevealed: [], timestamp: Date.now() }],
     };
 
     const { state: next } = processSeasonGuess(state, puzzle, 7);
@@ -111,7 +112,7 @@ describe('processSeasonGuess', () => {
     const state: GameState = {
       ...createFreshGameState(puzzle),
       status: 'guessing_season',
-      guesses: [{ type: 'guess', value: 'Sandra Diaz-Twine', correct: true, wordRevealed: -1, timestamp: Date.now() }],
+      guesses: [{ type: 'guess', value: 'Sandra Diaz-Twine', correct: true, wordsRevealed: [], timestamp: Date.now() }],
     };
 
     const { state: next } = processSeasonGuess(state, puzzle, 20);
