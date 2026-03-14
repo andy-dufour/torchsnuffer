@@ -1,6 +1,9 @@
 name = "torch-snuffer"
 compatibility_date = "2024-12-01"
-pages_build_output_dir = "./dist"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist"
 
 [vars]
 GAME_EPOCH = "2026-04-01"
