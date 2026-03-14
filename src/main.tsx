@@ -1,10 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { initTracing } from './lib/tracing'
 import './styles/globals.css'
 import App from './App.tsx'
 
-initTracing();
+import('./lib/tracing').then(m => m.initTracing()).catch(() => {});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

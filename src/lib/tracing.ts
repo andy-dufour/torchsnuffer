@@ -1,15 +1,19 @@
-import { HoneycombWebSDK } from '@honeycombio/opentelemetry-web';
-import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
-
-export function initTracing() {
+export async function initTracing() {
   const apiKey = import.meta.env.VITE_HONEYCOMB_API_KEY;
   if (!apiKey) return;
 
-  const sdk = new HoneycombWebSDK({
-    apiKey,
-    serviceName: 'torchsnuffer-web',
-    instrumentations: [new FetchInstrumentation({ propagateTraceHeaderCorsUrls: [/.*/] })],
-  });
+  try {
+    const { HoneycombWebSDK } = await import('@honeycombio/opentelemetry-web');
+    const { FetchInstrumentation } = await import('@opentelemetry/instrumentation-fetch');
 
-  sdk.start();
+    const sdk = new HoneycombWebSDK({
+      apiKey,
+      serviceName: 'torchsnuffer-web',
+      instrumentations: [new FetchInstrumentation({ propagateTraceHeaderCorsUrls: [/.*/] })],
+    });
+
+    sdk.start();
+  } catch (err) {
+    console.warn('Failed to initialize tracing:', err);
+  }
 }
