@@ -1,11 +1,8 @@
 import { getDailyPuzzle, getQuoteById } from '../../lib/puzzle';
 import { getPlayerIdFromCookie } from '../../lib/auth';
 import { processSeasonGuess } from '../../lib/validate';
+import { tracedKvGet, tracedKvPut, type TracedEnv } from '../../lib/tracing';
 import type { GameState } from '../../../src/types';
-
-interface Env {
-  GAME_KV: KVNamespace;
-}
 
 function getTodayET(): string {
   const now = new Date();
@@ -13,7 +10,7 @@ function getTodayET(): string {
   return et.toISOString().split('T')[0];
 }
 
-export const onRequestPost: PagesFunction<Env> = async (context) => {
+export const onRequestPost: PagesFunction<TracedEnv> = async (context) => {
   const { request, env } = context;
 
   const playerId = getPlayerIdFromCookie(request);
@@ -26,7 +23,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const puzzle = getDailyPuzzle(today);
 
   const kvKey = `player:${playerId}:game:${today}`;
-  const savedState = await env.GAME_KV.get<GameState>(kvKey, 'json');
+  const savedState = await tracedKvGet<GameState>(env.GAME_KV, kvKey);
   if (!savedState) {
     return new Response(JSON.stringify({ error: 'No active game' }), { status: 400 });
   }
@@ -36,7 +33,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return new Response(JSON.stringify({ error: result.error }), { status: 400 });
   }
 
-  await env.GAME_KV.put(kvKey, JSON.stringify(result.state), {
+  await tracedKvPut(env.GAME_KV, kvKey, JSON.stringify(result.state), {
     expirationTtl: 30 * 86400,
   });
 
@@ -44,7 +41,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   // Update player stats
   const statsKey = `player:${playerId}:stats`;
-  const stats = (await env.GAME_KV.get(statsKey, 'json')) as Record<string, unknown> | null ?? {
+  const stats = (await tracedKvGet(env.GAME_KV, statsKey)) as Record<string, unknown> | null ?? {
     playerId,
     totalPlayed: 0,
     totalWon: 0,
@@ -76,7 +73,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     (typedStats.distributionByAttempts[attemptCount] ?? 0) + 1;
   typedStats.lastPlayedDate = today;
 
-  await env.GAME_KV.put(statsKey, JSON.stringify(typedStats));
+  await tracedKvPut(env.GAME_KV, statsKey, JSON.stringify(typedStats));
 
   return new Response(
     JSON.stringify({

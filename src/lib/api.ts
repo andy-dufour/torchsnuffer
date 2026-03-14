@@ -1,4 +1,7 @@
+import { trace } from '@opentelemetry/api';
 import type { GameState, DailyPuzzle, PlayerStats, LeaderboardEntry } from '../types';
+
+const tracer = trace.getTracer('torchsnuffer-web');
 
 interface GameResponse {
   puzzle: DailyPuzzle;
@@ -39,27 +42,53 @@ async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
 }
 
 export async function fetchTodayGame(): Promise<GameResponse> {
-  return fetchJson<GameResponse>('/api/game/today');
+  return tracer.startActiveSpan('game.load', async (span) => {
+    try {
+      return await fetchJson<GameResponse>('/api/game/today');
+    } finally {
+      span.end();
+    }
+  });
 }
 
 export async function submitGuess(value: string): Promise<GuessResponse> {
-  return fetchJson<GuessResponse>('/api/game/guess', {
-    method: 'POST',
-    body: JSON.stringify({ action: 'guess', value }),
+  return tracer.startActiveSpan('game.guess', async (span) => {
+    span.setAttribute('guess.value', value);
+    try {
+      return await fetchJson<GuessResponse>('/api/game/guess', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'guess', value }),
+      });
+    } finally {
+      span.end();
+    }
   });
 }
 
 export async function submitReveal(): Promise<GuessResponse> {
-  return fetchJson<GuessResponse>('/api/game/guess', {
-    method: 'POST',
-    body: JSON.stringify({ action: 'reveal' }),
+  return tracer.startActiveSpan('game.reveal', async (span) => {
+    try {
+      return await fetchJson<GuessResponse>('/api/game/guess', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'reveal' }),
+      });
+    } finally {
+      span.end();
+    }
   });
 }
 
 export async function submitSeasonGuess(seasonNumber: number): Promise<SeasonResponse> {
-  return fetchJson<SeasonResponse>('/api/game/season', {
-    method: 'POST',
-    body: JSON.stringify({ seasonNumber }),
+  return tracer.startActiveSpan('game.seasonGuess', async (span) => {
+    span.setAttribute('season.number', seasonNumber);
+    try {
+      return await fetchJson<SeasonResponse>('/api/game/season', {
+        method: 'POST',
+        body: JSON.stringify({ seasonNumber }),
+      });
+    } finally {
+      span.end();
+    }
   });
 }
 

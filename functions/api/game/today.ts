@@ -1,10 +1,7 @@
 import { getDailyPuzzle } from '../../lib/puzzle';
 import { getPlayerIdFromCookie, generatePlayerId, makePlayerIdCookie } from '../../lib/auth';
 import { createFreshGameState } from '../../lib/validate';
-
-interface Env {
-  GAME_KV: KVNamespace;
-}
+import { tracedKvGet, tracedKvPut, type TracedEnv } from '../../lib/tracing';
 
 function getTodayET(): string {
   const now = new Date();
@@ -12,7 +9,7 @@ function getTodayET(): string {
   return et.toISOString().split('T')[0];
 }
 
-export const onRequestGet: PagesFunction<Env> = async (context) => {
+export const onRequestGet: PagesFunction<TracedEnv> = async (context) => {
   const { request, env } = context;
   const today = getTodayET();
   const puzzle = getDailyPuzzle(today);
@@ -26,7 +23,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 
   const kvKey = `player:${playerId}:game:${today}`;
-  const savedState = await env.GAME_KV.get(kvKey, 'json');
+  const savedState = await tracedKvGet(env.GAME_KV, kvKey);
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -45,7 +42,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   const freshState = createFreshGameState(puzzle);
 
-  await env.GAME_KV.put(kvKey, JSON.stringify(freshState), {
+  await tracedKvPut(env.GAME_KV, kvKey, JSON.stringify(freshState), {
     expirationTtl: 30 * 86400,
   });
 

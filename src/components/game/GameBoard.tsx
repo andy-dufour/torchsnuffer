@@ -26,7 +26,7 @@ export function GameBoard() {
     submitSeason,
   } = useGame();
 
-  const [lastSnuffedIndex, setLastSnuffedIndex] = useState<number | undefined>();
+  const [torchAnimating, setTorchAnimating] = useState(false);
   const [newlyRevealed, setNewlyRevealed] = useState<number[]>([]);
   const [autoRevealed, setAutoRevealed] = useState<number[]>([]);
   const [showCorrectGlow, setShowCorrectGlow] = useState(false);
@@ -49,7 +49,9 @@ export function GameBoard() {
 
     if (lastGuess.wordsRevealed.length > 0) setNewlyRevealed(lastGuess.wordsRevealed);
     if (lastGuess.autoRevealedWords?.length) setAutoRevealed(lastGuess.autoRevealedWords);
-    if (lastGuess.type === 'guess' && !lastGuess.correct) setLastSnuffedIndex(gameState.guesses.length - 1);
+
+    const isSnuff = (lastGuess.type === 'guess' && !lastGuess.correct) || lastGuess.type === 'reveal';
+    if (isSnuff) setTorchAnimating(true);
     if (lastGuess.type === 'guess' && lastGuess.correct) {
       setShowCorrectGlow(true);
       setTimeout(() => setShowCorrectGlow(false), 600);
@@ -58,7 +60,7 @@ export function GameBoard() {
     const timer = setTimeout(() => {
       setNewlyRevealed([]);
       setAutoRevealed([]);
-      setLastSnuffedIndex(undefined);
+      setTorchAnimating(false);
     }, 500);
 
     return () => clearTimeout(timer);
@@ -91,7 +93,7 @@ export function GameBoard() {
 
   return (
     <div className="flex flex-col gap-3 py-4">
-      <TorchBar attemptsUsed={attemptsUsed} lastSnuffedIndex={lastSnuffedIndex} />
+      <TorchBar attemptsUsed={attemptsUsed} gameStatus={gameState.status} animating={torchAnimating} />
 
       <QuoteDisplay
         words={words}

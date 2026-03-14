@@ -68,6 +68,12 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: scaleY(0); opacity: 0; }
 }
 
+@keyframes torch-enter {
+  0% { transform: translateX(12px) scale(0.6); opacity: 0; }
+  60% { transform: translateX(-2px) scale(1.05); opacity: 1; }
+  100% { transform: translateX(0) scale(1); opacity: 1; }
+}
+
 @keyframes smoke-puff {
   0% { transform: translateY(0) scale(0.5); opacity: 0.7; }
   100% { transform: translateY(-20px) scale(1.5); opacity: 0; }

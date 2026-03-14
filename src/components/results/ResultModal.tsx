@@ -44,7 +44,7 @@ export function ResultModal({ gameState, answer, quote, onClose, onViewLeaderboa
             ) : null}
 
             <p className="text-center text-text-primary text-lg font-medium mb-1">
-              Score: {attempts}/6{seasonCorrect ? ' ⭐' : ''}
+              Torches snuffed: {attempts - 1}{seasonCorrect ? ' ⭐' : ''}
             </p>
           </>
         ) : (

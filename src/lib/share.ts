@@ -15,8 +15,9 @@ export function buildShareText(state: GameState): string {
     .join('');
 
   const seasonStar = seasonCorrect ? ' — ⭐' : '';
+  const snuffed = attemptCount - 1;
   const scoreText = won
-    ? `Score: ${attemptCount}/6${seasonCorrect ? ' + Season bonus!' : ''}`
+    ? `Torches: ${snuffed} snuffed${seasonCorrect ? ' + Season bonus!' : ''}`
     : 'Torch Snuffed 💀';
 
   return [

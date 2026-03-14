@@ -91,13 +91,13 @@ export interface ScoreRating {
 }
 
 export const SCORE_RATINGS: Record<number, ScoreRating> = {
-  1: { title: "Sole Survivor", torches: 6, emoji: "🔥🔥🔥🔥🔥🔥" },
-  2: { title: "Immunity Winner", torches: 5, emoji: "🔥🔥🔥🔥🔥" },
-  3: { title: "Alliance Leader", torches: 4, emoji: "🔥🔥🔥🔥" },
-  4: { title: "Tribal Threat", torches: 3, emoji: "🔥🔥🔥" },
-  5: { title: "On the Chopping Block", torches: 2, emoji: "🔥🔥" },
-  6: { title: "Survived by a Thread", torches: 1, emoji: "🔥" },
-  0: { title: "Torch Snuffed", torches: 0, emoji: "💀" },
+  1: { title: "Sole Survivor", torches: 0, emoji: "🔥" },
+  2: { title: "Immunity Winner", torches: 1, emoji: "💨🔥" },
+  3: { title: "Alliance Leader", torches: 2, emoji: "💨💨🔥" },
+  4: { title: "Tribal Threat", torches: 3, emoji: "💨💨💨🔥" },
+  5: { title: "On the Chopping Block", torches: 4, emoji: "💨💨💨💨🔥" },
+  6: { title: "Survived by a Thread", torches: 5, emoji: "💨💨💨💨💨🔥" },
+  0: { title: "Torch Snuffed", torches: 6, emoji: "💨💨💨💨💨💨" },
 };
 
 export const MAX_ATTEMPTS = 6;

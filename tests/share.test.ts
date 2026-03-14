@@ -22,7 +22,7 @@ describe('buildShareText', () => {
     expect(text).toContain('TORCH SNUFFER #42');
     expect(text).toContain('⬜💨🔥');
     expect(text).toContain('⭐');
-    expect(text).toContain('3/6');
+    expect(text).toContain('Torches: 2 snuffed');
     expect(text).toContain('Season bonus!');
     expect(text).toContain('torchsnuffer.com');
   });
@@ -65,6 +65,6 @@ describe('buildShareText', () => {
 
     const text = buildShareText(state);
     expect(text).not.toContain('⭐');
-    expect(text).toContain('1/6');
+    expect(text).toContain('Torches: 0 snuffed');
   });
 });
